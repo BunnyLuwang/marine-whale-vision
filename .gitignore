@@ -1,0 +1,17 @@
+# Virtual env
+venv/
+
+# Data and generated artifacts
+data/
+baseline_data/
+patches/
+object_patches/
+auto_candidates/
+
+# Large images
+*.jpg
+*.png
+*.zip
+
+# Jupyter
+.ipynb_checkpoints/
