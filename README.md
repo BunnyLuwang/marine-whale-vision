@@ -1,124 +1,103 @@
-Evidence-Limited Whale Detection from Aerial Imagery
-Overview
+# Marine Whale Vision
+## Evidence-Limited Whale Detection from Aerial Imagery
 
-This project investigates the limits of whale detection from single-frame aerial imagery.
-Instead of optimizing for raw detection accuracy, the focus is on understanding detectability, uncertainty, and visual evidence in realistic marine environments.
+---
 
-Through a sequence of experiments, the project analyzes whale detection at three levels:
+## Project Summary
 
-Patch-level evidence detection
+This project studies the limitations of whale detection from single-frame aerial imagery under realistic marine conditions.  
+Rather than optimizing for raw detection accuracy, the focus is on understanding visual evidence, uncertainty, and detectability limits in water-dominated environments.
 
-Bounding-box proposal and localization analysis
+The project analyzes whale detection across three spatial levels:
+- Patch-level (local evidence)
+- Bounding-box-level (spatial localization)
+- Image-level (global context)
 
-Full-frame CNN baseline comparison
+---
 
-The results show that while whales may be visually present, they are often not visually dominant in the signal space that standard computer vision models rely on.
+## Research Question
 
-Motivation
+When does visual evidence genuinely support whale detection, and when does model confidence arise from background bias?
 
-Aerial imagery from drones and aircraft is widely used in:
+---
 
-marine wildlife monitoring
+## Key Findings
 
-conservation and population surveys
+- Local whale cues are weak and fragmented due to partial submergence and surface distortion.
+- Bounding-box proposals are dominated by water surface structures such as foam, glare, and wave patterns.
+- Full-frame CNN classifiers achieve high apparent detection rates despite limited localized evidence.
+- Aggregation of weak signals improves reliability but substantially reduces recall.
 
-ship-strike mitigation and marine safety
+---
 
-However, whales are frequently:
+## Experimental Components
 
-partially submerged
+### Patch-Level Evidence Analysis
+- Grid-based patch extraction
+- Edge-density–based candidate selection
+- Lightweight CNN for whale vs background patches
+- Image-level aggregation of patch evidence
 
-visually distorted by water surface effects
+Relevant notebooks:
+- `patch_extraction.ipynb`
+- `train_patch_cnn.ipynb`
+- `evaluate_system.ipynb`
 
-surrounded by high-frequency background patterns (foam, glare, waves)
+---
 
-This project asks a simple but important question:
+### Bounding-Box Proposal Analysis
+- Edge-based connected component proposals
+- Qualitative and quantitative analysis of candidate boxes
+- Assessment of spatial fragmentation and background dominance
 
-When does visual evidence actually support whale detection, and when does model confidence arise from bias instead?
+Relevant notebook:
+- `bbox_analysis.ipynb`
 
-Key Findings
+---
 
-Local visual cues are weak
-Patch-level whale features are fragmented and often indistinguishable from water textures.
+### Full-Frame CNN Baseline
+- Lightweight CNN operating on full images
+- Comparison against evidence-driven approaches
+- Analysis of confidence versus visual grounding
 
-Bounding-box localization is unreliable
-Candidate boxes are dominated by water-induced edges rather than whale anatomy, even when whales are large and centered.
+Relevant notebook:
+- `image_level_detection.ipynb`
 
-Full-frame CNNs are over-confident
-Image-level classifiers detect whales in ~88% of images, despite limited localized evidence.
-
-Aggregation improves reliability but reduces recall
-Conservative, evidence-driven aggregation correctly abstains in many cases where confidence would be misleading.
-
-Project Structure
-├── explore_data.ipynb              # Initial dataset inspection
-├── patch_extraction.ipynb          # Patch generation and analysis
-├── train_patch_cnn.ipynb           # Lightweight patch-level CNN
-├── evaluate_system.ipynb           # Patch aggregation and decisions
-├── bbox_analysis.ipynb             # Bounding-box proposal analysis
-├── image_level_detection.ipynb     # Full-frame CNN baseline
-├── baseline_data_prep.py           # Data preparation utilities
-├── baseline_fullframe_cnn.py       # Full-image CNN model
-├── sample_whale.png                # Example aerial image
-├── README.md
-└── .gitignore
+---
 
 
-Note:
-Large datasets, generated patches, and virtual environments are intentionally excluded from the repository.
+---
 
-Dataset
+## Dataset
 
-The experiments use a large collection of aerial whale images.
+The experiments use a collection of aerial whale images.  
 Due to size and licensing constraints, the dataset is not included in this repository.
 
-The code assumes a directory of aerial images and can be adapted to other marine datasets with minimal changes.
+All experiments assume access to a directory containing aerial whale imagery.
 
-Methodology Summary
-Patch-Level Analysis
+---
 
-Grid-based patch extraction
+## Limitations
 
-Candidate selection via edge density
+- Single-frame imagery only; no temporal aggregation
+- No acoustic or thermal modalities
+- No bounding-box annotations
+- Emphasis on analysis rather than detector optimization
 
-Lightweight CNN for whale vs background
+---
 
-Evidence aggregation at image level
+## Future Work
 
-Bounding-Box Analysis
+- Temporal aggregation across video sequences
+- Uncertainty-aware detection strategies
+- Multi-modal sensing for marine monitoring
+- Weakly supervised localization methods
 
-Edge-based connected component proposals
+---
 
-Qualitative and quantitative analysis of box quality
+## Key Insight
 
-Demonstration of spatial fragmentation and background dominance
+High detection confidence does not imply strong visual evidence.  
+In marine environments, background structures often dominate the visual signal, leading to overconfident predictions that are weakly grounded.
 
-Full-Frame Baseline
 
-Lightweight CNN operating on full images
-
-Comparison against evidence-driven methods
-
-Analysis of confidence vs visual grounding
-
-Key Insight
-
-High detection confidence does not imply strong visual evidence.
-
-In marine environments, background structures often dominate the visual signal, leading standard models to appear successful while relying on spurious correlations.
-
-Limitations and Future Work
-
-Single-frame imagery only (no temporal aggregation)
-
-No acoustic or thermal modalities
-
-No bounding-box annotations
-
-Future directions include:
-
-temporal evidence aggregation across video frames
-
-uncertainty-aware detection
-
-multi-modal marine sensing
